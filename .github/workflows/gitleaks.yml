@@ -36,10 +36,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Pull Trivy Image
-        run: docker pull aquasec/trivy:latest
+      - name: Install Trivy via Snap
+        run: sudo snap install trivy
 
       - name: Run Trivy Scan
-        run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            aquasec/trivy:latest image --exit-code 1 --severity HIGH,CRITICAL satrio8/microservice-app:latest
+        run: trivy image --exit-code 1 --severity HIGH,CRITICAL satrio8/microservice-app:latest
