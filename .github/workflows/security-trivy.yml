@@ -22,7 +22,7 @@ jobs:
 
       - name: Run Trivy Image Scan
         run: |
-          trivy image --exit-code 1 --severity HIGH,CRITICAL my-docker-image:latest
+          trivy image --exit-code 1 --severity HIGH,CRITICAL satrio8/microservice-app:latest
 
   gitleaks-scan:
     name: Gitleaks Scan
