@@ -18,18 +18,31 @@ jobs:
 
       - name: Install Trivy
         run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          sudo apt update
+          sudo apt install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_Linux-64bit.tar.gz
+          tar -xzf trivy_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
 
       - name: Run Trivy Image Scan
         run: |
           trivy image --exit-code 1 --severity HIGH,CRITICAL satrio8/microservice-app:latest
 
   gitleaks-scan:
-    name: Gitleaks Scan
+    name: Gitleaks Secret Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Pastikan seluruh commit history tersedia
+
+      - name: Verify Gitleaks Config File
+        run: |
+          if [ ! -f .github/gitleaks.toml ]; then
+            echo "Gitleaks config file not found! Exiting..."
+            exit 1
+          fi
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
