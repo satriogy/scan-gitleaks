@@ -18,8 +18,8 @@ jobs:
 
       - name: Pull Source Code from Docker Image
         run: |
-          docker pull microservice-app:latest
-          docker create --name extract_code microservice-app
+          docker pull satrio8/microservice-app:latest
+          docker create --name extract_code satrio8/microservice-app
           docker cp extract_code:/app ./source_code
           docker rm extract_code
 
